@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    font-size: 5vh;
+}
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+
+#view {
+    margin-top: 2vh;
+}
+
+#controls button {
+
+    border: none;
+    padding-bottom: 4px;
+
+  }
+  
+  #controls button:active {
+    background-color: #388e3c;
+  }
+  
+
+#mazeContainer {
+    display: inline-block;
+    margin: auto;
+    border-radius: 1vh;
+}
+#mazeContainer #mazeCanvas {
+    margin: 0;
+    display: block;
+    border: solid 2px black;
+    height: 70vh;
+}
+input, select {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.30);
+    height: 8vh;
+    width: 24vh;
+    padding: 1vh 0 1vh 0;
+    border: none;
+    border-radius: 1vh;
+    color: white;
+    display: inline-block;
+    font-size: 5vh;
+    text-align: center;
+    text-decoration: none;
+    appearance: none;
+    margin-right: 5vh;
+    margin-left: 5vh;
+
+}
+input:hover, select:hover {
+	background-color: rgba(0, 0, 0, 0.70);
+}
+input:active, select:active {
+	background-color: black;
+}
+input:focus, select:focus {
+	outline: none;
+}
+.custom-select {
+	display: inline-block;
+}
+.custom-select select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-repeat: no-repeat;
+    background-position: 125px center;
+}
+#Message-Container {
+    visibility: hidden;
+    color: white;
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.30);
+    z-index: 1;
+}
+#Message-Container #message {
+    width: 300px;
+    height: 300px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -150px;
+}
+#page {
+	text-align: center;
+    margin-top: -5vh;
+}
+.border {
+    border: 1vh black solid;
+    border-radius: 1vh;
+}
+
+.instructions{
+    font-size: 5vh;
+    margin: 0;
+}
+
+/* Optional: Custom SweetAlert Styling */
+.sweet-popup {
+    max-width: 90vw; /* Limit the width to 90% of the viewport */
+    max-height: 80vh; /* Limit the height to 70% of the viewport */
+    border-radius: 2vh;
+}
+
+.swal2-popup {
+    font-size: 2vh; /* Adjust the font size if necessary */
+    
+}
+
+.swal2-confirm{
+    font-size: 3vh; /* Adjust the font size if necessary */
+    width: 30vh;
+    height: 10vh;
+    border-radius: 1vh;
+}
+
+.swal2-actions{
+    margin-top: 1vh;
+}
+
+@media (max-width: 600px) {
+
+    .swal2-popup .swal2-success-ring,
+    .swal2-popup .swal2-success-circular-line-left,
+    .swal2-popup .swal2-success-circular-line-right,
+    .swal2-popup .swal2-success-fix {
+        display: none !important; /* Hide the success ring and check mark */
+    }
+
+    #mazeContainer #mazeCanvas {
+        margin: 0;
+        display: block;
+        border: solid 0.5vh black;
+        height: 40vh;
+        width: 40vh;
+    }
+
+    
+.instructions{
+    font-size: 2vh;
+    margin: 0;
+}
+
+}
+
+ 
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 560px) {
+	input, select {
+        margin-bottom: 1vh;
+        height: 6vh;
+        width: 10vh;
+        font-size: 4vh;
+	}
+    
+}
