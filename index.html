@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Maze</title>
+  <title>PacMazed</title>
   <link rel="stylesheet" href="./style.css">
+  <link rel="icon" type="image/x-icon" href="./Sprites/PacMan.ico">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
@@ -19,10 +20,10 @@
       <div id="menu">
         <div class="custom-select">
           <select id="diffSelect">
-            <option value="10">Easy</option>
+            <option value="6">Easy</option>
             <option value="15">Medium</option>
-            <option value="25">Hard</option>
-            <option value="38">Extreme</option>                                      
+            <option value="22">Hard</option>
+            <option value="30">Extreme</option>                                      
           </select>
         </div>
         <input id="startMazeBtn" type="button" onclick="makeMaze()" value="Start" />
@@ -35,10 +36,10 @@
       <button class="close-btn" onclick="closeNav()">×</button> <!-- Close icon -->
       <div class="custom-select">
         <select id="diffSelectMobile">
-          <option value="10">Easy</option>
-          <option value="15">Medium</option>
-          <option value="25">Hard</option>
-          <option value="38">Extreme</option>                                      
+          <option value="6">Easy</option>
+          <option value="12">Medium</option>
+          <option value="20">Hard</option>
+          <option value="30">Extreme</option>                                      
         </select>
       </div>
       <input id="startMazeBtnMobile" type="button" onclick="makeMaze()" value="Start" />
