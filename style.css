@@ -118,6 +118,7 @@ input:focus, select:focus {
 .instructions{
     font-size: 5vh;
     margin: 0;
+    color: blue;
 }
 
 /* Optional: Custom SweetAlert Styling */
