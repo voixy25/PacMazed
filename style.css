@@ -115,7 +115,7 @@ input:focus, select:focus {
     border-radius: 1vh;
 }
 
-.instructions{
+#instructions{
     font-size: 5vh;
     margin: 0;
     color: blue;
