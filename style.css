@@ -315,6 +315,7 @@ input:focus, select:focus {
 
     
 .instructions{
+    color: blue;
     font-size: 2vh;
     margin: 0;
 }
