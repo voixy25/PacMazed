@@ -6,24 +6,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Maze</title>
   <link rel="stylesheet" href="./style.css">
-  <!-- Include SweetAlert 2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
   <div id="page">
-    <br>
-    <div id="menu">
-      <div class="custom-select">
-        <select id="diffSelect">
-                  <option value="10">Easy</option>
-                  <option value="15">Medium</option>
-                  <option value="25">Hard</option>
-                  <option value="38">Extreme</option>                                      
-              </select>
+    <!-- Navbar with burger icon -->
+    <div id="navbar">
+      <div id="burgerIcon" class="burger-icon" onclick="toggleNav()">
+        &#9776; <!-- Hamburger icon -->
       </div>
-      <input id="startMazeBtn" type="button" onclick="makeMaze()" value="Start" />
+      <div id="menu">
+        <div class="custom-select">
+          <select id="diffSelect">
+            <option value="10">Easy</option>
+            <option value="15">Medium</option>
+            <option value="25">Hard</option>
+            <option value="38">Extreme</option>                                      
+          </select>
+        </div>
+        <input id="startMazeBtn" type="button" onclick="makeMaze()" value="Start" />
+      </div>
+      
+    </div>
+    
+    <!-- Sidebar Menu (hidden by default) -->
+    <div id="sideNav" class="side-nav">
+      <button class="close-btn" onclick="closeNav()">×</button> <!-- Close icon -->
+      <div class="custom-select">
+        <select id="diffSelectMobile">
+          <option value="10">Easy</option>
+          <option value="15">Medium</option>
+          <option value="25">Hard</option>
+          <option value="38">Extreme</option>                                      
+        </select>
+      </div>
+      <input id="startMazeBtnMobile" type="button" onclick="makeMaze()" value="Start" />
     </div>
 
     <div id="view">
@@ -37,15 +55,13 @@
       <button id="downButton">⬇️</button>
       <button id="rightButton">➡️</button>
     </div>
-    
-
-    <p id="instructions">Use arrow keys to move the key to the star!</p>
-
+  
+    <p id="instructions">To move the PacMan use arrow keys and slay the Ghost!</p>
+    <div class="info">i</div>
   </div>
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.18/jquery.touchSwipe.min.js"></script>
-  
   <script src="./script.js"></script>
 </body>
 </html>

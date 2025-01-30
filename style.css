@@ -16,7 +16,7 @@ html, body {
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #fff;
+    background-color: black;
     font-family: 'Poppins', sans-serif;
 }
 
@@ -44,12 +44,12 @@ html, body {
 #mazeContainer #mazeCanvas {
     margin: 0;
     display: block;
-    border: solid 2px black;
+    border: solid 2px blue;
     height: 70vh;
 }
 input, select {
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.30);
+    background-color: rgb(0, 5, 29);
     height: 8vh;
     width: 24vh;
     padding: 1vh 0 1vh 0;
@@ -66,10 +66,10 @@ input, select {
 
 }
 input:hover, select:hover {
-	background-color: rgba(0, 0, 0, 0.70);
+	background-color: rgb(0, 5, 29);
 }
 input:active, select:active {
-	background-color: black;
+	background-color: rgb(0, 5, 29);
 }
 input:focus, select:focus {
 	outline: none;
@@ -109,10 +109,9 @@ input:focus, select:focus {
 }
 #page {
 	text-align: center;
-    margin-top: -5vh;
 }
 .border {
-    border: 1vh black solid;
+    border: 1vh blue solid;
     border-radius: 1vh;
 }
 
@@ -144,6 +143,158 @@ input:focus, select:focus {
     margin-top: 1vh;
 }
 
+.info{
+    position: absolute;
+    right: 3%;
+    bottom: 2%;
+    background-color: rgb(0, 5, 29);
+    color: blue;
+    border: 0.5vh solid blue;
+    border-radius: 50%;
+    width: 10vh;
+    height: 10vh;
+    text-align: center;
+    line-height: 10vh;
+    user-select: none;
+}
+
+.info:hover{
+    cursor: pointer;
+    background-color: rgb(0, 10, 56);
+}
+
+  
+  #menu {
+    display: flex;
+    align-items: center;
+  }
+  
+  #burgerIcon {
+    font-size: 2.5vh;
+    cursor: pointer;
+    display: none; /* Hidden by default */
+  }
+  
+  /* Info button styling */
+  
+  
+  /* Layout for canvas and controls */
+  #view {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #mazeContainer {
+    position: relative;
+  }
+  
+  #controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  /* When the side nav is open */
+
+  /* Hide the top navbar when side nav is open */
+  #navbar.hide {
+    display: none;
+  }
+  
+  /* Hide the burger icon when side nav is open */
+  #burgerIcon.hide {
+    display: none;
+  }
+  
+  /* Navbar and burger icon on mobile view */
+  #burgerIcon {
+    font-size: 2.5vh;
+    cursor: pointer;
+    display: none; /* Hidden by default */
+}
+
+/* Navbar styles */
+#navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333;
+    height: 10vh;
+    padding: 0 3vh;
+    z-index: 10; /* Ensure navbar stays on top */
+    position: relative; /* To ensure it doesn't get affected by the side nav */
+}
+
+/* Side Navigation (off-canvas menu) */
+.side-nav {
+    height: 100%;
+    width: 0; /* Initially hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #333;
+    opacity: 0.9;
+    overflow-x: hidden;
+    transition: 0.3s ease; /* Add smooth transition */
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Navbar is always at full width */
+
+/* Side nav should slide over content */
+.side-nav.open {
+    width: 40%; /* 20% width when open */
+    margin-top: 0; /* No margin on top to keep navbar unaffected */
+}
+
+/* Content inside the side navigation (align buttons to the top) */
+.side-nav input,
+.side-nav select , .side-nav .custom-select, .side-nav select{
+    background-color: rgba(0, 0, 0, 1);
+    color: white;
+    font-size: 2vh; /* Smaller font size */
+    margin: 0;
+    border: none;
+    border-radius: 1vh;
+    padding: 0;
+    width: 100%; /* Adjust width to fit */
+    display: block;
+}
+
+/* Close button styles */
+.side-nav .close-btn{
+    font-size: 1vh;
+    color: white;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 1vh;
+    right: 1vh;
+}
+
+/* Buttons inside the side nav (align them to the top) */
+.side-nav .custom-select,
+.side-nav input {
+    margin-top: 3vh;
+    font-size: 2vh; /* Smaller font size */
+    margin-bottom: 3vh;
+    width: 90%; /* Add some space between buttons */
+}
+
+/* Navbar and burger icon on mobile view */
+#burgerIcon {
+    font-size: 2.5vh;
+    cursor: pointer;
+    display: none; /* Hidden by default */
+}
+
+
 @media (max-width: 600px) {
 
     .swal2-popup .swal2-success-ring,
@@ -156,7 +307,7 @@ input:focus, select:focus {
     #mazeContainer #mazeCanvas {
         margin: 0;
         display: block;
-        border: solid 0.5vh black;
+        border: solid 0.5vh blue;
         height: 40vh;
         width: 40vh;
     }
@@ -167,6 +318,55 @@ input:focus, select:focus {
     margin: 0;
 }
 
+#burgerIcon {
+    display: block;
+}
+
+/* Make sure navbar remains at the top */
+#navbar {
+    position: relative;
+    z-index: 100;
+}
+
+  
+  .info {
+    display: none;
+  }
+
+  #diffSelect, #startMazeBtn{
+    display: none;
+  }
+
+  .side-nav .close-btn {
+    font-size: 3vh;
+    color: white;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 1vh;
+    right: 1vh;
+  }
+  
+  .side-nav .close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  #burgerIcon {
+    display: block;
+}
+
+/* Make sure navbar remains at the top */
+#navbar {
+    position: relative;
+    z-index: 100;
+}
+
+
+.info {
+    display: none;
+}
+
 }
 
  
@@ -174,9 +374,16 @@ input:focus, select:focus {
 @media only screen and (max-width: 560px) {
 	input, select {
         margin-bottom: 1vh;
-        height: 6vh;
-        width: 10vh;
+        height: 7vh;
+        width: 12vh;
         font-size: 4vh;
 	}
+
+    #navbar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    
     
 }

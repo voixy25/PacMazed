@@ -22,6 +22,50 @@ document.getElementById("rightButton").addEventListener("click", function () {
   if (player) player.handleKeyPress({ keyCode: 39 }); // Simulate right arrow key
 });
 
+document.querySelector('.info').addEventListener('click', function() {
+  Swal.fire({
+    title: 'Pac-Man: The Ghost Slayer',
+    text: 'Trapped in a haunted maze, Pac-Man must outsmart and slay the ghost that has plunged the world into darkness. Armed with Power Pellets, he turns the tables on his spectral foes, battling to reclaim the sacred orbs and escape the labyrinth. Can Pac-Man conquer the maze and defeat the ghosts, or will he be lost forever?.',
+    icon: 'info',
+    confirmButtonText: 'Zanimivo!'
+  });
+});
+
+document.addEventListener('touchstart', function (e) {
+  if (e.touches.length > 1) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+// Prevent double-tap zooming
+document.addEventListener('dblclick', function (e) {
+  e.preventDefault();
+});
+
+// Function to toggle the side navigation and show the navbar at the top
+// Function to toggle the side navigation and show the navbar at the top
+function toggleNav() {
+  const sideNav = document.getElementById('sideNav');
+  const navbar = document.getElementById('navbar');
+  const burgerIcon = document.getElementById('burgerIcon');
+
+  // Toggle the side navigation visibility and hide/show the navbar and burger icon
+  sideNav.classList.toggle('open');
+  burgerIcon.classList.toggle('hide');
+}
+
+// Function to close the side navigation (close button)
+function closeNav() {
+  const sideNav = document.getElementById('sideNav');
+  const navbar = document.getElementById('navbar');
+  const burgerIcon = document.getElementById('burgerIcon');
+
+  // Remove the 'open' class to hide the side nav
+  sideNav.classList.remove('open');
+  burgerIcon.classList.remove('hide');
+}
+
+
 
 
 
@@ -284,6 +328,7 @@ function rand(max) {
     };
   
     function drawCell(xCord, yCord, cell) {
+      ctx.strokeStyle = "blue"; 
       var x = xCord * cellSize;
       var y = yCord * cellSize;
   
@@ -382,189 +427,136 @@ function rand(max) {
   }
   
   function Player(maze, c, _cellsize, onComplete, sprite = null) {
-    this.handleKeyPress = check; // Expose the `check` function globally
+    this.handleKeyPress = check; // Expose the check function globally
     var ctx = c.getContext("2d");
-    var drawSprite;
     var moves = 0;
-    drawSprite = drawSpriteCircle;
-    if (sprite != null) {
-      drawSprite = drawSpriteImg;
-    }
-    var player = this;
     var map = maze.map();
     var cellCoords = {
-      x: maze.startCoord().x,
-      y: maze.startCoord().y
+        x: maze.startCoord().x,
+        y: maze.startCoord().y
     };
     var cellSize = _cellsize;
-    var halfCellSize = cellSize / 2;
-  
-    this.redrawPlayer = function(_cellsize) {
-      cellSize = _cellsize;
-      drawSpriteImg(cellCoords);
+
+    // New: Track the player's direction
+    var direction = "left"; // Default direction is left
+
+    // Redraw the player when the maze or cell size changes
+    this.redrawPlayer = function (_cellsize) {
+        cellSize = _cellsize;
+        drawSprite(cellCoords);
     };
-  
-    function drawSpriteCircle(coord) {
-      ctx.beginPath();
-      ctx.fillStyle = "yellow";
-      ctx.arc(
-        (coord.x + 1) * cellSize - halfCellSize,
-        (coord.y + 1) * cellSize - halfCellSize,
-        halfCellSize - 2,
-        0,
-        2 * Math.PI
-      );
-      ctx.fill();
-      if (coord.x === maze.endCoord().x && coord.y === maze.endCoord().y) {
-        onComplete(moves);
-        player.unbindKeyDown();
-      }
-    }
-  
-    function drawSpriteImg(coord) {
-      // Make the player sprite smaller relative to the cell
-      var playerSize = cellSize * 0.6; // Player sprite is now 60% of the cell size
-      var offset = (cellSize - playerSize) / 2; // Center the player within the cell
-  
-      // Draw the smaller sprite
-      ctx.drawImage(
-          sprite,
-          0,
-          0,
-          sprite.width,
-          sprite.height,
-          coord.x * cellSize + offset,
-          coord.y * cellSize + offset,
-          playerSize,
-          playerSize
-      );
-  
-      // Check for the win condition
-      if (coord.x === maze.endCoord().x && coord.y === maze.endCoord().y) {
-          onComplete(moves);
-          player.unbindKeyDown();
-      }
-  }
-  
-    function removeSprite(coord) {
-      // Define player size as a fraction of the cell size
-      var playerSize = cellSize * 0.8; // Player is 80% of the cell size
-      var offset = (cellSize - playerSize) / 2; // Center the player within the cell
-      // Ensure pixel-perfect clearing with no leftover artifacts
-      var buffer = 0.5; // Small buffer for sub-pixel precision
-      
-      // Clear only the area where the player sprite was drawn
-      ctx.clearRect(
-          Math.floor(coord.x * cellSize + offset - buffer), // Start clearing precisely
-          Math.floor(coord.y * cellSize + offset - buffer),
-          Math.ceil(playerSize + 2 * buffer),              // Ensure no gaps with `ceil`
-          Math.ceil(playerSize + 2 * buffer)              // Ensure no gaps with `ceil`
-      );
-  }
-  
-    
-    
-  
-    function check(e) {
-      var cell = map[cellCoords.x][cellCoords.y];
-      moves++;
-      switch (e.keyCode) {
-        case 65:
-        case 37: // west
-          if (cell.w == true) {
-            removeSprite(cellCoords);
-            cellCoords = {
-              x: cellCoords.x - 1,
-              y: cellCoords.y
-            };
-            drawSprite(cellCoords);
-          }
-          break;
-        case 87:
-        case 38: // north
-          if (cell.n == true) {
-            removeSprite(cellCoords);
-            cellCoords = {
-              x: cellCoords.x,
-              y: cellCoords.y - 1
-            };
-            drawSprite(cellCoords);
-          }
-          break;
-        case 68:
-        case 39: // east
-          if (cell.e == true) {
-            removeSprite(cellCoords);
-            cellCoords = {
-              x: cellCoords.x + 1,
-              y: cellCoords.y
-            };
-            drawSprite(cellCoords);
-          }
-          break;
-        case 83:
-        case 40: // south
-          if (cell.s == true) {
-            removeSprite(cellCoords);
-            cellCoords = {
-              x: cellCoords.x,
-              y: cellCoords.y + 1
-            };
-            drawSprite(cellCoords);
-          }
-          break;
-      }
-    }
-  
-    this.bindKeyDown = function() {
-      window.addEventListener("keydown", check, false);
-  
-      $("#view").swipe({
-        swipe: function(
-          event,
-          direction,
-          distance,
-          duration,
-          fingerCount,
-          fingerData
-        ) {
-          console.log(direction);
-          switch (direction) {
-            case "up":
-              check({
-                keyCode: 38
-              });
-              break;
+
+    // Draw Pac-Man's sprite, rotated based on direction
+    function drawSprite(coord) {
+        // Clear the previous sprite
+        clearSprite(coord);
+
+        // Save the canvas state
+        ctx.save();
+
+        // Calculate the center of the cell
+        var centerX = coord.x * cellSize + cellSize / 2;
+        var centerY = coord.y * cellSize + cellSize / 2;
+
+        // Translate to the center of the cell
+        ctx.translate(centerX, centerY);
+
+        // Rotate the canvas based on the current direction
+        switch (direction) {
             case "down":
-              check({
-                keyCode: 40
-              });
-              break;
+                ctx.rotate((Math.PI * 3) / 2); // 270 degrees
+                break;
+            case "up":
+                ctx.rotate(Math.PI / 2); // 90 degrees
+                break;
             case "left":
-              check({
-                keyCode: 37
-              });
-              break;
+                ctx.rotate(0); // 0 degrees
+                break;
             case "right":
-              check({
-                keyCode: 39
-              });
-              break;
-          }
-        },
-        threshold: 0
-      });
+                ctx.rotate(Math.PI); // 180 degrees
+                break;
+        }
+
+        // Draw the sprite
+        var playerSize = cellSize * 0.6; // Scale Pac-Man to 60% of the cell size
+        var offset = -playerSize / 2; // Center the sprite
+        ctx.drawImage(sprite, 0, 0, sprite.width, sprite.height, offset, offset, playerSize, playerSize);
+
+        // Restore the canvas state
+        ctx.restore();
+
+        // Check for win condition
+        if (coord.x === maze.endCoord().x && coord.y === maze.endCoord().y) {
+            onComplete(moves);
+            this.unbindKeyDown();
+        }
+    }
+
+    // Clear the area around the sprite
+    function clearSprite(coord) {
+        var playerSize = cellSize * 0.8;
+        var offset = (cellSize - playerSize) / 2;
+        ctx.clearRect(coord.x * cellSize + offset, coord.y * cellSize + offset, playerSize, playerSize);
+    }
+
+    // Handle movement and update direction
+    function check(e) {
+        var cell = map[cellCoords.x][cellCoords.y];
+        moves++;
+        switch (e.keyCode) {
+            case 65: // A key
+            case 37: // Left arrow
+                if (cell.w) {
+                    direction = "left"; // Update direction
+                    movePlayer(-1, 0);
+                }
+                break;
+            case 87: // W key
+            case 38: // Up arrow
+                if (cell.n) {
+                    direction = "up"; // Update direction
+                    movePlayer(0, -1);
+                }
+                break;
+            case 68: // D key
+            case 39: // Right arrow
+                if (cell.e) {
+                    direction = "right"; // Update direction
+                    movePlayer(1, 0);
+                }
+                break;
+            case 83: // S key
+            case 40: // Down arrow
+                if (cell.s) {
+                    direction = "down"; // Update direction
+                    movePlayer(0, 1);
+                }
+                break;
+        }
+    }
+
+    // Move the player to a new cell and redraw
+    function movePlayer(dx, dy) {
+        clearSprite(cellCoords);
+        cellCoords = { x: cellCoords.x + dx, y: cellCoords.y + dy };
+        drawSprite(cellCoords);
+    }
+
+    // Bind keydown events for player control
+    this.bindKeyDown = function () {
+        window.addEventListener("keydown", check, false);
     };
-  
-    this.unbindKeyDown = function() {
-      window.removeEventListener("keydown", check, false);
-      $("#view").swipe("destroy");
+
+    // Unbind keydown events
+    this.unbindKeyDown = function () {
+        window.removeEventListener("keydown", check, false);
     };
-  
-    drawSprite(maze.startCoord());
-  
+
+    // Initial draw of the player at the start position
+    drawSprite(cellCoords);
     this.bindKeyDown();
-  }
+}
+
   
   var mazeCanvas = document.getElementById("mazeCanvas");
   var ctx = mazeCanvas.getContext("2d");
@@ -600,7 +592,7 @@ function rand(max) {
     };
     sprite = new Image();
     sprite.src =
-      "./key.png" +
+      "./Sprites/PacMan.png" +
       "?" +
       new Date().getTime();
     sprite.setAttribute("crossOrigin", " ");
@@ -612,7 +604,7 @@ function rand(max) {
     };
   
     finishSprite = new Image();
-    finishSprite.src = "./star.gif"+
+    finishSprite.src = "./Sprites/Blinky.png"+
     "?" +
     new Date().getTime();
     finishSprite.setAttribute("crossOrigin", " ");
@@ -651,7 +643,8 @@ function rand(max) {
       player.unbindKeyDown();
       player = null;
     }
-    var e = document.getElementById("diffSelect");
+    if (document.querySelector('.side-nav').classList.contains('open')) var e = document.getElementById("diffSelectMobile");
+    else var e = document.getElementById("diffSelect");
     difficulty = e.options[e.selectedIndex].value;
     cellSize = mazeCanvas.width / difficulty;
     maze = new Maze(difficulty, difficulty);
