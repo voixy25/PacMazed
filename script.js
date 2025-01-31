@@ -129,7 +129,7 @@ function displayVictoryMess(moves) {
     completedLevels.add(difficulty); // Mark current level as completed
 
     let levelButtons = "";
-    for (let i = 2; i <= 40; i++) {
+    for (let i = 1; i <= 40; i++) {
         let completedClass = completedLevels.has(i) ? "completed-level" : "remaining-level";
         levelButtons += `<div class="level-box ${completedClass}">${i}</div>`;
     }
@@ -343,7 +343,7 @@ function displayVictoryMess(moves) {
     };
   
     function drawCell(xCord, yCord, cell) {
-      ctx.strokeStyle = "blue"; 
+      ctx.strokeStyle = "rgb(0, 0, 141)"; 
       var x = xCord * cellSize;
       var y = yCord * cellSize;
       var linewidth = ctx.lineWidth / 2;

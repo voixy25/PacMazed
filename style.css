@@ -32,7 +32,7 @@ html, body {
   }
   
   #controls button:active {
-    background-color: blue;
+    background-color: rgb(0, 0, 141);
     transition: 3ms;
     padding-bottom: 0.5vh;
   }
@@ -46,7 +46,7 @@ html, body {
 #mazeContainer #mazeCanvas {
     margin: 0;
     display: block;
-    border: solid 0.6vh blue;
+    border: solid 0.5vh rgb(0, 0, 141);
     height: 70vh;
 }
 input, select {
@@ -113,12 +113,12 @@ input:focus, select:focus {
 	text-align: center;
 }
 .border {
-    border: 1vw blue solid;
+    border: 1vw rgb(0, 0, 141) solid;
 }
 
 #instructions{
     font-size: 5vh;
-    color: blue;
+    color: rgb(0, 0, 141);
 }
 
 /* Optional: Custom SweetAlert Styling */
@@ -126,16 +126,17 @@ input:focus, select:focus {
     max-width: 90vw; /* Limit the width to 90% of the viewport */
     max-height: 80vh; /* Limit the height to 70% of the viewport */
     border-radius: 2vh;
+    font-size: 1vh;
 }
 
 .swal2-popup {
     font-size: 1.5vh; /* Adjust the font size if necessary */
     background-color: black;
     color: white;
-}
+} 
 
 .swal2-confirm{
-    font-size: 3vh; /* Adjust the font size if necessary */
+    font-size: 2.5vh; /* Adjust the font size if necessary */
     width: 30vh;
     height: 10vh;
     border-radius: 1vh;
@@ -146,8 +147,8 @@ input:focus, select:focus {
     right: 3%;
     bottom: 2%;
     background-color: rgb(0, 5, 29);
-    color: blue;
-    border: 0.5vh solid blue;
+    color: rgb(0, 0, 141);
+    border: 0.5vh solid rgb(0, 0, 141);
     border-radius: 50%;
     width: 10vh;
     height: 10vh;
@@ -162,22 +163,6 @@ input:focus, select:focus {
 }
 
   
-  #menu {
-    display: flex;
-    align-items: center;
-  }
-  
-  #burgerIcon {
-    font-size: 2.5vh;
-    color: white;
-    cursor: pointer;
-    display: none; /* Hidden by default */
-  }
-  
-  /* Info button styling */
-  
-  
-  /* Layout for canvas and controls */
   #view {
     flex-grow: 1;
     display: flex;
@@ -188,124 +173,35 @@ input:focus, select:focus {
   #mazeContainer {
     position: relative;
   }
-  
 
-  /* When the side nav is open */
-
-  /* Hide the top navbar when side nav is open */
-  #navbar.hide {
-    display: none;
-  }
-  
-  /* Hide the burger icon when side nav is open */
-  #burgerIcon.hide {
-    display: none;
-  }
-  
-  /* Navbar and burger icon on mobile view */
-  #burgerIcon {
-    font-size: 2.5vh;
-    cursor: pointer;
-    display: none; /* Hidden by default */
-}
-
-/* Navbar styles */
-#navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #333;
-    height: 10vh;
-    padding: 0 3vh;
-    z-index: 10; /* Ensure navbar stays on top */
-    position: relative; /* To ensure it doesn't get affected by the side nav */
-}
-
-/* Side Navigation (off-canvas menu) */
 .side-nav {
-    height: 100%;
-    width: 0; /* Initially hidden */
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #333;
-    opacity: 0.9;
-    overflow-x: hidden;
-    transition: 0.3s ease; /* Add smooth transition */
-    padding-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 9999;
+    display: none;
 }
 
-/* Navbar is always at full width */
-
-/* Side nav should slide over content */
-.side-nav.open {
-    width: 40%; /* 20% width when open */
-    margin-top: 0; /* No margin on top to keep navbar unaffected */
-}
-
-/* Content inside the side navigation (align buttons to the top) */
-.side-nav input,
-.side-nav select , .side-nav .custom-select, .side-nav select{
-    background-color: rgba(0, 0, 0, 1);
-    color: white;
-    font-size: 2vh; /* Smaller font size */
-    margin: 0;
-    border: none;
-    border-radius: 1vh;
-    padding: 0;
-    width: 100%; /* Adjust width to fit */
-    display: block;
-}
-
-/* Close button styles */
-.side-nav .close-btn{
-    font-size: 1vh;
-    color: white;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    position: absolute;
-    top: 1vh;
-    right: 1vh;
-}
-
-/* Buttons inside the side nav (align them to the top) */
-.side-nav .custom-select,
-.side-nav input {
-    margin-top: 3vh;
-    font-size: 2vh; /* Smaller font size */
-    margin-bottom: 3vh;
-    width: 90%; /* Add some space between buttons */
-}
-
-/* Navbar and burger icon on mobile view */
-#burgerIcon {
-    font-size: 2.5vh;
-    cursor: pointer;
-    display: none; /* Hidden by default */
+h1{
+    color: rgb(0, 0, 141);
+    font-size: 8vh;
+    margin-top: 1vw;
 }
 
 .level-container {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr); /* 10 columns per row */
-    gap: 10px; /* More space between levels */
-    max-width: 600px; /* Wider container */
-    margin: 10px auto;
+    display: flex;
+    flex-wrap: wrap;
     text-align: center;
+    justify-content: space-evenly;
+    margin: 1vh auto;
 }
 
 .level-box {
-    width: 50px; /* Wider boxes */
-    height: 50px; /* More height for balance */
-    line-height: 50px; /* Center numbers properly */
-    font-size: 18px; /* Bigger font for visibility */
+    width: 5vh; /* Wider boxes */
+    height: 5vh; /* More height for balance */
+    line-height: 5vh; /* Center numbers properly */
+    font-size: 3vh; /* Bigger font for visibility */
     font-weight: bold;
     text-align: center;
-    border-radius: 8px;
+    border-radius: 1.5vh;
+    margin: 0.65vh 1.3vh;
+    cursor: pointer;
 }
 
 .completed-level {
@@ -320,13 +216,18 @@ input:focus, select:focus {
 
 /* Increase Swal popup width */
 .swal2-popup {
-    width: 70vw !important; /* Make the popup wider */
+    width: 40vw !important; /* Make the popup wider */
     max-width: 90%; /* Responsive width */
+    font-size: 1vwww;
 }
 
+.swal2-html-container p, .swal2-html-container b{
+    font-size: 2vh;
+}
 
-
-
+#navbar{
+    display: none;
+}
 
 @media (max-width: 600px) {
 
@@ -340,14 +241,15 @@ input:focus, select:focus {
     #mazeContainer #mazeCanvas {
         margin: 0;
         display: block;
-        border: solid 0.5vh blue;
+        border: solid 0.5vh rgb(0, 0, 141);
         height: 40vh;
         width: 40vh;
     }
 
+
     
 .instructions{
-    color: blue;
+    color: rgb(0, 0, 110);
     font-size: 2vh;
     margin: 0;
 }
@@ -418,6 +320,13 @@ input:focus, select:focus {
         justify-content: space-between;
         align-items: center;
       }
+
+
+    .swal2-popup {
+        width: 70vw !important; /* Make the popup wider */
+        max-width: 90%; /* Responsive width */
+        font-size: 1vwww;
+    }
     
     
 }
