@@ -318,11 +318,13 @@ function rand(max) {
     var map = Maze.map();
     var cellSize = cellsize;
     var drawEndMethod;
-    ctx.lineWidth = cellSize / 40;
+    ctx.lineWidth = cellSize / 10;
+    ctx.lineJoin = "round";
   
     this.redrawMaze = function(size) {
       cellSize = size;
-      ctx.lineWidth = cellSize / 50;
+      ctx.lineWidth = cellSize / 10;
+      ctx.lineJoin = "round";
       drawMap();
       drawEndMethod();
     };
@@ -331,32 +333,41 @@ function rand(max) {
       ctx.strokeStyle = "blue"; 
       var x = xCord * cellSize;
       var y = yCord * cellSize;
-  
-      if (cell.n == false) {
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + cellSize, y);
-        ctx.stroke();
+      var linewidth = ctx.lineWidth / 2;
+      
+      ctx.lineJoin = "round"; // Ensure lineJoin is set for each cell
+      ctx.beginPath(); // Start a new path for the whole cell
+      
+      // Draw the north border if cell.n is false
+      if (cell.n === false) {
+          ctx.moveTo(x - linewidth, y);  // Start slightly outside the top-left corner
+          ctx.lineTo(x + cellSize + linewidth, y);  // Draw slightly outside the top-right corner
       }
-      if (cell.s === false) {
-        ctx.beginPath();
-        ctx.moveTo(x, y + cellSize);
-        ctx.lineTo(x + cellSize, y + cellSize);
-        ctx.stroke();
-      }
+      
+      // Draw the east border if cell.e is false
       if (cell.e === false) {
-        ctx.beginPath();
-        ctx.moveTo(x + cellSize, y);
-        ctx.lineTo(x + cellSize, y + cellSize);
-        ctx.stroke();
+          ctx.moveTo(x + cellSize, y - linewidth);  // Start slightly above the top-right corner
+          ctx.lineTo(x + cellSize, y + cellSize + linewidth);  // Draw slightly below the bottom-right corner
       }
+      
+      // Draw the south border if cell.s is false
+      if (cell.s === false) {
+          ctx.moveTo(x + cellSize + linewidth, y + cellSize);  // Start slightly outside the bottom-right corner
+          ctx.lineTo(x - linewidth, y + cellSize);  // Draw slightly outside the bottom-left corner
+      }
+      
+      // Draw the west border if cell.w is false
       if (cell.w === false) {
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x, y + cellSize);
-        ctx.stroke();
+          ctx.moveTo(x, y + cellSize + linewidth);  // Start slightly below the bottom-left corner
+          ctx.lineTo(x, y - linewidth);  // Draw slightly above the top-left corner
       }
-    }
+      
+      ctx.stroke();  // Stroke the whole path
+      ctx.closePath();  // Close the path (optional)
+  }
+  
+
+  
   
     function drawMap() {
       for (x = 0; x < map.length; x++) {
@@ -395,21 +406,26 @@ function rand(max) {
     }
   
     function drawEndSprite() {
-      var offsetLeft = cellSize / 50;
-      var offsetRight = cellSize / 25;
       var coord = Maze.endCoord();
+      var playerSize = cellSize * 0.6; // Scale Pac-Man to 60% of the cell size
+  
+      // Calculate the offset to center the sprite
+      var centerX = coord.x * cellSize + (cellSize - playerSize) / 2;
+      var centerY = coord.y * cellSize + (cellSize - playerSize) / 2;
+  
       ctx.drawImage(
-        endSprite,
-        2,
-        2,
-        endSprite.width,
-        endSprite.height,
-        coord.x * cellSize + offsetLeft,
-        coord.y * cellSize + offsetLeft,
-        cellSize - offsetRight,
-        cellSize - offsetRight
+          endSprite,
+          0,
+          0,
+          endSprite.width,
+          endSprite.height,
+          centerX,
+          centerY,
+          playerSize,
+          playerSize
       );
-    }
+  }
+  
   
     function clear() {
       var canvasSize = cellSize * map.length;
@@ -560,6 +576,7 @@ function rand(max) {
   
   var mazeCanvas = document.getElementById("mazeCanvas");
   var ctx = mazeCanvas.getContext("2d");
+  ctx.lineJoin = "round";
   var sprite;
   var finishSprite;
   var maze, draw, player;
@@ -628,6 +645,8 @@ function rand(max) {
     // Get the 2D rendering context
     ctx = mazeCanvas.getContext("2d");
 
+    ctx.lineJoin = "round";
+
     // Calculate the cell size based on the fixed canvas width and height
     cellSize = Math.min(canvasWidth / difficulty, canvasHeight / difficulty);
 
@@ -650,6 +669,7 @@ function rand(max) {
     maze = new Maze(difficulty, difficulty);
     draw = new DrawMaze(maze, ctx, cellSize, finishSprite);
     player = new Player(maze, mazeCanvas, cellSize, displayVictoryMess, sprite);
+    ctx.lineJoin = "round";
     if (document.getElementById("mazeContainer").style.opacity < "100") {
       document.getElementById("mazeContainer").style.opacity = "100";
     }
