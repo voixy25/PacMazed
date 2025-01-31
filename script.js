@@ -27,7 +27,7 @@ document.querySelector('.info').addEventListener('click', function() {
     title: 'Pac-Man: The Ghost Slayer',
     text: 'Trapped in a haunted maze, Pac-Man must outsmart and slay the ghost that has plunged the world into darkness. Armed with Power Pellets, he turns the tables on his spectral foes, battling to reclaim the sacred orbs and escape the labyrinth. Can Pac-Man conquer the maze and defeat the ghosts, or will he be lost forever?.',
     icon: 'info',
-    confirmButtonText: 'Zanimivo!'
+    confirmButtonText: 'Interesting!'
   });
 });
 
