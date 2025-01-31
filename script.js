@@ -123,21 +123,34 @@ function rand(max) {
     return spriteOutput;
   }
   
-  function displayVictoryMess(moves) {
+  let completedLevels = new Set(); // Track completed levels
+
+function displayVictoryMess(moves) {
+    completedLevels.add(difficulty); // Mark current level as completed
+
+    let levelButtons = "";
+    for (let i = 2; i <= 40; i++) {
+        let completedClass = completedLevels.has(i) ? "completed-level" : "remaining-level";
+        levelButtons += `<div class="level-box ${completedClass}">${i}</div>`;
+    }
+
     Swal.fire({
-        title: 'Congratulations!',
-        text: 'You completed the maze in ' + moves + ' moves.',
+        title: `Level ${difficulty} Completed!`,
+        html: `
+            <p>You finished in <b>${moves}</b> moves.</p>
+            <div class="level-container">${levelButtons}</div>
+            <p>Progressing to <b>Level ${Math.min(difficulty + 1, 40)}</b>...</p>
+        `,
         icon: 'success',
-        confirmButtonText: 'Play Again',
-        customClass: {
-            popup: 'sweet-popup'
-        }
-    }).then((result) => {
-        if (result.isConfirmed) {
-            makeMaze();
-        }
+        timer: 3000, // Auto-move after 3 sec
+        showConfirmButton: false
+    }).then(() => {
+        difficulty = Math.min(difficulty + 1, 40); // Move to the next level
+        makeMaze();
     });
 }
+
+
 
 
   
@@ -674,3 +687,103 @@ function rand(max) {
       document.getElementById("mazeContainer").style.opacity = "100";
     }
   }
+
+  window.onload = function() {
+    showDifficultyPopup(); // Prompt difficulty selection at the start
+
+    let viewWidth = $("#view").width();
+    let viewHeight = $("#view").height();
+    if (viewHeight < viewWidth) {
+      ctx.canvas.width = viewHeight - viewHeight / 100;
+      ctx.canvas.height = viewHeight - viewHeight / 100;
+    } else {
+      ctx.canvas.width = viewWidth - viewWidth / 100;
+      ctx.canvas.height = viewWidth - viewWidth / 100;
+    }
+  
+    //Load and edit sprites
+    var completeOne = false;
+    var completeTwo = false;
+    var isComplete = () => {
+      if(completeOne === true && completeTwo === true)
+         {
+           console.log("Runs");
+           setTimeout(function(){
+             makeMaze();
+           }, 500);         
+         }
+    };
+    sprite = new Image();
+    sprite.src =
+      "./Sprites/PacMan.png" +
+      "?" +
+      new Date().getTime();
+    sprite.setAttribute("crossOrigin", " ");
+    sprite.onload = function() {
+      sprite = changeBrightness(1.2, sprite);
+      completeOne = true;
+      console.log(completeOne);
+      isComplete();
+    };
+  
+    finishSprite = new Image();
+    finishSprite.src = "./Sprites/Blinky.png"+
+    "?" +
+    new Date().getTime();
+    finishSprite.setAttribute("crossOrigin", " ");
+    finishSprite.onload = function() {
+      finishSprite = changeBrightness(1.1, finishSprite);
+      completeTwo = true;
+      console.log(completeTwo);
+      isComplete();
+    };
+};
+
+function showDifficultyPopup() {
+  let levelButtons = "";
+  for (let i = 1; i <= 40; i++) {
+      let completedClass = completedLevels.has(i) ? "completed-level" : "remaining-level";
+      levelButtons += `<div class="level-box ${completedClass}" onclick="setDifficulty(${i})">${i}</div>`;
+  }
+
+  Swal.fire({
+      title: "Select Your Starting Level",
+      html: `
+          <div class="level-container">${levelButtons}</div>
+      `,
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      customClass: {
+          popup: 'swal2-popup'
+      }
+  });
+}
+
+function setDifficulty(level) {
+  difficulty = level;
+  Swal.close();
+  makeMaze();
+}
+
+var difficulty;
+
+function setDifficulty(level) {
+    difficulty = level;
+    Swal.close();
+    makeMaze();
+}
+
+function makeMaze() {
+  if (player != undefined) {
+    player.unbindKeyDown();
+    player = null;
+  }
+  cellSize = mazeCanvas.width / difficulty;
+  maze = new Maze(difficulty, difficulty);
+  draw = new DrawMaze(maze, ctx, cellSize, finishSprite);
+  player = new Player(maze, mazeCanvas, cellSize, displayVictoryMess, sprite);
+  ctx.lineJoin = "round";
+  if (document.getElementById("mazeContainer").style.opacity < "100") {
+    document.getElementById("mazeContainer").style.opacity = "100";
+  }
+}

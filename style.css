@@ -118,7 +118,6 @@ input:focus, select:focus {
 
 #instructions{
     font-size: 5vh;
-    margin: 0;
     color: blue;
 }
 
@@ -293,6 +292,44 @@ input:focus, select:focus {
     cursor: pointer;
     display: none; /* Hidden by default */
 }
+
+.level-container {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr); /* 10 columns per row */
+    gap: 10px; /* More space between levels */
+    max-width: 600px; /* Wider container */
+    margin: 10px auto;
+    text-align: center;
+}
+
+.level-box {
+    width: 50px; /* Wider boxes */
+    height: 50px; /* More height for balance */
+    line-height: 50px; /* Center numbers properly */
+    font-size: 18px; /* Bigger font for visibility */
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.completed-level {
+    background-color: #00cc66; /* Green = Completed */
+    color: white;
+}
+
+.remaining-level {
+    background-color: #ffcc00; /* Yellow = Not yet completed */
+    color: black;
+}
+
+/* Increase Swal popup width */
+.swal2-popup {
+    width: 70vw !important; /* Make the popup wider */
+    max-width: 90%; /* Responsive width */
+}
+
+
+
 
 
 @media (max-width: 600px) {
