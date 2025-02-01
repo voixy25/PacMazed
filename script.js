@@ -42,53 +42,6 @@ document.addEventListener('dblclick', function (e) {
   e.preventDefault();
 });
 
-// Function to toggle the side navigation and show the navbar at the top
-// Function to toggle the side navigation and show the navbar at the top
-function toggleNav() {
-  const sideNav = document.getElementById('sideNav');
-  const navbar = document.getElementById('navbar');
-  const burgerIcon = document.getElementById('burgerIcon');
-
-  // Toggle the side navigation visibility and hide/show the navbar and burger icon
-  sideNav.classList.toggle('open');
-  burgerIcon.classList.toggle('hide');
-}
-
-// Function to close the side navigation (close button)
-function closeNav() {
-  const sideNav = document.getElementById('sideNav');
-  const navbar = document.getElementById('navbar');
-  const burgerIcon = document.getElementById('burgerIcon');
-
-  // Remove the 'open' class to hide the side nav
-  sideNav.classList.remove('open');
-  burgerIcon.classList.remove('hide');
-}
-
-
-
-
-
-document.getElementById("startMazeBtn").addEventListener("click", function () {
-  // Force browser zoom to 100%
-  document.body.style.zoom = "100%"; // Works for most modern browsers
-
-  // Alternatively, set the viewport dynamically for better compatibility
-  const metaTag = document.querySelector("meta[name='viewport']");
-  if (metaTag) {
-      metaTag.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no");
-  } else {
-      const newMetaTag = document.createElement("meta");
-      newMetaTag.name = "viewport";
-      newMetaTag.content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no";
-      document.head.appendChild(newMetaTag);
-  }
-
-  console.log("Zoom set to 100%"); // Optional: Debug message
-  makeMaze(); // Call the existing makeMaze function to start the maze
-});
-
-
 function rand(max) {
     return Math.floor(Math.random() * max);
   }
@@ -126,7 +79,7 @@ function rand(max) {
   let completedLevels = new Set(); // Track completed levels
 
 function displayVictoryMess(moves) {
-    completedLevels.add(difficulty); // Mark current level as completed
+    completedLevels.add(difficulty - 4); // Mark current level as completed
 
     let levelButtons = "";
     for (let i = 1; i <= 40; i++) {
@@ -135,25 +88,21 @@ function displayVictoryMess(moves) {
     }
 
     Swal.fire({
-        title: `Level ${difficulty} Completed!`,
+        title: `Level ${difficulty - 4} Completed!`,
         html: `
             <p>You finished in <b>${moves}</b> moves.</p>
             <div class="level-container">${levelButtons}</div>
-            <p>Progressing to <b>Level ${Math.min(difficulty + 1, 40)}</b>...</p>
+            <p>Progressing to <b>Level ${Math.min(difficulty - 3, 40)}</b>...</p>
         `,
         icon: 'success',
         timer: 3000, // Auto-move after 3 sec
         showConfirmButton: false
     }).then(() => {
-        difficulty = Math.min(difficulty + 1, 40); // Move to the next level
+        difficulty = Math.min(difficulty+1, 40); // Move to the next level
         makeMaze();
     });
 }
 
-
-
-
-  
   function toggleVisablity(id) {
     if (document.getElementById(id).style.visibility == "visible") {
       document.getElementById(id).style.visibility = "hidden";
@@ -379,9 +328,6 @@ function displayVictoryMess(moves) {
       ctx.closePath();  // Close the path (optional)
   }
   
-
-  
-  
     function drawMap() {
       for (x = 0; x < map.length; x++) {
         for (y = 0; y < map[x].length; y++) {
@@ -419,6 +365,8 @@ function displayVictoryMess(moves) {
     }
   
     function drawEndSprite() {
+      if (!endSprite) return; // Ensure sprite exists
+
       var coord = Maze.endCoord();
       var playerSize = cellSize * 0.6; // Scale Pac-Man to 60% of the cell size
   
@@ -445,11 +393,7 @@ function displayVictoryMess(moves) {
       ctx.clearRect(0, 0, canvasSize, canvasSize);
     }
   
-    if (endSprite != null) {
-      drawEndMethod = drawEndSprite;
-    } else {
-      drawEndMethod = drawEndFlag;
-    }
+    drawEndMethod = endSprite ? drawEndSprite : drawEndFlag;
     clear();
     drawMap();
     drawEndMethod();
@@ -597,56 +541,6 @@ function displayVictoryMess(moves) {
   var difficulty;
   // sprite.src = 'media/sprite.png';
   
-  window.onload = function() {
-    let viewWidth = $("#view").width();
-    let viewHeight = $("#view").height();
-    if (viewHeight < viewWidth) {
-      ctx.canvas.width = viewHeight - viewHeight / 100;
-      ctx.canvas.height = viewHeight - viewHeight / 100;
-    } else {
-      ctx.canvas.width = viewWidth - viewWidth / 100;
-      ctx.canvas.height = viewWidth - viewWidth / 100;
-    }
-  
-    //Load and edit sprites
-    var completeOne = false;
-    var completeTwo = false;
-    var isComplete = () => {
-      if(completeOne === true && completeTwo === true)
-         {
-           console.log("Runs");
-           setTimeout(function(){
-             makeMaze();
-           }, 500);         
-         }
-    };
-    sprite = new Image();
-    sprite.src =
-      "./Sprites/PacMan.png" +
-      "?" +
-      new Date().getTime();
-    sprite.setAttribute("crossOrigin", " ");
-    sprite.onload = function() {
-      sprite = changeBrightness(1.2, sprite);
-      completeOne = true;
-      console.log(completeOne);
-      isComplete();
-    };
-  
-    finishSprite = new Image();
-    finishSprite.src = "./Sprites/Blinky.png"+
-    "?" +
-    new Date().getTime();
-    finishSprite.setAttribute("crossOrigin", " ");
-    finishSprite.onload = function() {
-      finishSprite = changeBrightness(1.1, finishSprite);
-      completeTwo = true;
-      console.log(completeTwo);
-      isComplete();
-    };
-    
-  };
-  
   window.onresize = function() {
     // We no longer need to resize the canvas itself, since it's fixed in size.
     // But we do need to redraw the maze and player with the correct cell size.
@@ -670,49 +564,31 @@ function displayVictoryMess(moves) {
     }
 };
 
-  function makeMaze() {
-    if (player != undefined) {
-      player.unbindKeyDown();
-      player = null;
-    }
-    if (document.querySelector('.side-nav').classList.contains('open')) var e = document.getElementById("diffSelectMobile");
-    else var e = document.getElementById("diffSelect");
-    difficulty = e.options[e.selectedIndex].value;
-    cellSize = mazeCanvas.width / difficulty;
-    maze = new Maze(difficulty, difficulty);
-    draw = new DrawMaze(maze, ctx, cellSize, finishSprite);
-    player = new Player(maze, mazeCanvas, cellSize, displayVictoryMess, sprite);
-    ctx.lineJoin = "round";
-    if (document.getElementById("mazeContainer").style.opacity < "100") {
-      document.getElementById("mazeContainer").style.opacity = "100";
-    }
-  }
-
   window.onload = function() {
-    showDifficultyPopup(); // Prompt difficulty selection at the start
+    showDifficultyPopup(); // Show difficulty selection
 
     let viewWidth = $("#view").width();
     let viewHeight = $("#view").height();
     if (viewHeight < viewWidth) {
-      ctx.canvas.width = viewHeight - viewHeight / 100;
-      ctx.canvas.height = viewHeight - viewHeight / 100;
+        ctx.canvas.width = viewHeight - viewHeight / 100;
+        ctx.canvas.height = viewHeight - viewHeight / 100;
     } else {
-      ctx.canvas.width = viewWidth - viewWidth / 100;
-      ctx.canvas.height = viewWidth - viewWidth / 100;
+        ctx.canvas.width = viewWidth - viewWidth / 100;
+        ctx.canvas.height = viewWidth - viewWidth / 100;
     }
-  
-    //Load and edit sprites
-    var completeOne = false;
-    var completeTwo = false;
-    var isComplete = () => {
-      if(completeOne === true && completeTwo === true)
-         {
-           console.log("Runs");
-           setTimeout(function(){
-             makeMaze();
-           }, 500);         
-         }
-    };
+
+    // Load and edit sprites
+    let completeOne = false;
+    let completeTwo = false;
+
+    function isComplete() {
+        if (completeOne && completeTwo) {
+            console.log("Sprites Loaded - Starting Maze");
+            setTimeout(makeMaze, 500);
+        }
+    }
+
+    // Load Pac-Man sprite
     sprite = new Image();
     sprite.src =
       "./Sprites/PacMan.png" +
@@ -725,37 +601,38 @@ function displayVictoryMess(moves) {
       console.log(completeOne);
       isComplete();
     };
-  
+
+    // Select a random ghost
+    const ghosts = ["Blinky", "Pinky", "Inky", "Clyde"];
+    const randomGhost = ghosts[Math.floor(Math.random() * ghosts.length)];
+
+    // Load random ghost sprite
     finishSprite = new Image();
-    finishSprite.src = "./Sprites/Blinky.png"+
-    "?" +
-    new Date().getTime();
-    finishSprite.setAttribute("crossOrigin", " ");
+    finishSprite.src = `./Sprites/${randomGhost}.png`;
     finishSprite.onload = function() {
-      finishSprite = changeBrightness(1.1, finishSprite);
-      completeTwo = true;
-      console.log(completeTwo);
-      isComplete();
+        finishSprite = changeBrightness(1.1, finishSprite);
+        completeTwo = true;
+        console.log(`Ghost Loaded: ${randomGhost}`);
+        isComplete();
+    };
+
+    // Error handling in case of missing files
+    finishSprite.onerror = function() {
+        console.error(`Failed to load: ${finishSprite.src}`);
     };
 };
 
 function showDifficultyPopup() {
-  let levelButtons = "";
-  for (let i = 1; i <= 40; i++) {
-      let completedClass = completedLevels.has(i) ? "completed-level" : "remaining-level";
-      levelButtons += `<div class="level-box ${completedClass}" onclick="setDifficulty(${i})">${i}</div>`;
-  }
-
   Swal.fire({
-      title: "Select Your Starting Level",
-      html: `
-          <div class="level-container">${levelButtons}</div>
-      `,
-      showConfirmButton: false,
+      title: "Welcome to Pac-Man: The Ghost Slayer!",
+      text: "Use arrow keys or touch controls to move. Escape the maze and avoid the ghosts!",
+      confirmButtonText: "Play",
       allowOutsideClick: false,
       customClass: {
-          popup: 'swal2-popup'
+          popup: "swal2-popup"
       }
+  }).then(() => {
+      setDifficulty(1); // Start at Level 1 (Tutorial)
   });
 }
 
@@ -768,22 +645,46 @@ function setDifficulty(level) {
 var difficulty;
 
 function setDifficulty(level) {
-    difficulty = level;
-    Swal.close();
-    makeMaze();
+  difficulty = level + 4; // Level 1 (tutorial) starts at difficulty 5
+  Swal.close();
+  makeMaze();
 }
 
 function makeMaze() {
   if (player != undefined) {
-    player.unbindKeyDown();
-    player = null;
+      player.unbindKeyDown();
+      player = null;
   }
+
   cellSize = mazeCanvas.width / difficulty;
   maze = new Maze(difficulty, difficulty);
-  draw = new DrawMaze(maze, ctx, cellSize, finishSprite);
-  player = new Player(maze, mazeCanvas, cellSize, displayVictoryMess, sprite);
-  ctx.lineJoin = "round";
-  if (document.getElementById("mazeContainer").style.opacity < "100") {
-    document.getElementById("mazeContainer").style.opacity = "100";
-  }
+
+  // Select a different ghost for each level
+  const ghosts = ["Blinky", "Pinky", "Inky", "Clyde"];
+  let selectedGhost = ghosts[(difficulty - 1) % ghosts.length]; // Cycle through ghosts
+
+  finishSprite = new Image();
+  finishSprite.src = `./Sprites/${selectedGhost}.png`;
+
+  finishSprite.onload = function () {
+      console.log(`Ghost Loaded: ${selectedGhost}`); // Debugging check
+      finishSprite = changeBrightness(1.1, finishSprite); 
+
+      // Create the maze drawing **after** the sprite has loaded
+      draw = new DrawMaze(maze, ctx, cellSize, finishSprite);
+      player = new Player(maze, mazeCanvas, cellSize, displayVictoryMess, sprite);
+
+      ctx.lineJoin = "round";
+
+      if (document.getElementById("mazeContainer").style.opacity < "100") {
+          document.getElementById("mazeContainer").style.opacity = "100";
+      }
+
+      // Force a redraw to display the end sprite
+      setTimeout(() => draw.redrawMaze(cellSize), 100); // Small delay ensures rendering
+  };
+
+  finishSprite.onerror = function () {
+      console.error(`Failed to load: ${finishSprite.src}`);
+  };
 }
