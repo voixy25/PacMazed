@@ -90,7 +90,7 @@ function displayVictoryMess(moves) {
     Swal.fire({
         title: `Level ${difficulty - 4} Completed!`,
         html: `
-            <p>You finished in <b>${moves}</b> moves.</p>
+            <p>You finished the level in <b>${moves}</b> moves.</p>
             <div class="level-container">${levelButtons}</div>
             <p>Progressing to <b>Level ${Math.min(difficulty - 3, 40)}</b>...</p>
         `,
@@ -624,15 +624,38 @@ function displayVictoryMess(moves) {
 
 function showDifficultyPopup() {
   Swal.fire({
-      title: "Welcome to Pac-Man: The Ghost Slayer!",
-      text: "Use arrow keys or touch controls to move. Escape the maze and avoid the ghosts!",
-      confirmButtonText: "Play",
-      allowOutsideClick: false,
-      customClass: {
-          popup: "swal2-popup"
-      }
-  }).then(() => {
+    title: "Welcome to Pac-Mazed: The Ghost Invasion!",
+    html: 'Instructions: <br>Use arrow keys or touch controls to move. Navigate the maze and slay the Ghosts! <br><br>For more information click \'More Info\'<br>To start the tutorial click \'Play\'',
+    imageUrl: './Sprites/PacMan.png', // Pac-Man image URL (update path as needed)
+    imageWidth: '15vh',  // You can adjust the width as needed
+    imageHeight: '15vh', // You can adjust the height as needed
+    imageAlt: 'Pac-Man',
+    confirmButtonText: "Play",
+    showDenyButton: true, // Show the "More Info" button
+    denyButtonText: 'More Info',
+    allowOutsideClick: false,
+    customClass: {
+      popup: "swal2-popup"
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // When "Play" is clicked, set difficulty and start level
       setDifficulty(1); // Start at Level 1 (Tutorial)
+    } else if (result.isDenied) {
+      // When "More Info" is clicked, show the backstory
+      Swal.fire({
+        title: 'Backstory of Pac-Mazed',
+        html: 'Pac-Mazed is a thrilling spin-off of the classic Pac-Man game, where players control Pac-Man through 40 challenging mazes. The objective: slay the Ghosts and progress to the next level. As you advance, the mazes get trickier, and the Ghosts become harder to find, putting your instincts and strategy to the test. Can you conquer all the levels and save the world from the Ghost invasion?',
+        imageUrl: './Sprites/PacMan.png', // Pac-Man image URL (update path as needed)
+      imageWidth: '15vh',  // You can adjust the width as needed
+      imageHeight: '15vh', // You can adjust the height as needed
+      imageAlt: 'Pac-Man',
+        confirmButtonText: 'Close',
+      }).then(() => {
+        // Reopen the original tutorial popup after closing the backstory
+        showDifficultyPopup();
+      });
+    }
   });
 }
 
