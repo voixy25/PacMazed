@@ -1,6 +1,7 @@
 var player; // Ensure this is defined globally for access
 
-    // Playlist of songs with names
+// Playlist of songs with names
+// Playlist of songs with names
 const playlist = [
   { src: "./Music/nomark-vista.mp3", name: "Nomark - Vista" },
   { src: "./Music/nomark-besede.mp3", name: "Nomark - Besede" },
@@ -16,7 +17,11 @@ function playSong(index) {
   const song = playlist[index];
   audio.src = song.src; // Set the song source
   document.title = `PacMazed | ${song.name}`; // Update the tab title
-  audio.play(); // Start playback
+  audio.play().then(() => {
+    console.log(`Playing: ${song.name}`);
+  }).catch(error => {
+    console.error("Error playing audio:", error);
+  }); // Start playback and catch any errors
 }
 
 // Function to play the next song in the playlist
@@ -26,14 +31,29 @@ function playNextSong() {
 }
 
 // Initial setup: Play the first song
-playSong(currentTrack);
+audio.addEventListener("canplaythrough", () => {
+  console.log("Audio can play through");
+  playSong(currentTrack);
+}, { once: true });
 
 // Event listener to handle when the current song ends
-audio.addEventListener("ended", playNextSong);
+audio.addEventListener("ended", () => {
+  console.log("Audio ended, playing next song");
+  playNextSong();
+});
 
 // Optional: Set the volume
 audio.volume = 0.1;
 
+// Debugging: Log when the audio element is loaded
+audio.addEventListener("loadeddata", () => {
+  console.log("Audio element loaded");
+});
+
+// Debugging: Log any errors with the audio element
+audio.addEventListener("error", (e) => {
+  console.error("Audio element error", e);
+});
 
 // Show on-screen controls if on mobile
 if (/Mobi|Android/i.test(navigator.userAgent)) {
@@ -676,6 +696,7 @@ function showDifficultyPopup() {
     }
   }).then((result) => {
     if (result.isConfirmed) {
+      playSong(currentTrack);
       // When "Play" is clicked, set difficulty and start level
       setDifficulty(1); // Start at Level 1 (Tutorial)
       startTimer();
