@@ -1,5 +1,40 @@
 var player; // Ensure this is defined globally for access
 
+    // Playlist of songs with names
+const playlist = [
+  { src: "./Music/nomark-vista.mp3", name: "Nomark - Vista" },
+  { src: "./Music/nomark-besede.mp3", name: "Nomark - Besede" },
+  { src: "./Music/nomark-sneg.mp3", name: "Nomark - Sneg" },
+  { src: "./Music/nomark-bedak.mp3", name: "Nomark - Bedak :D" }
+];
+
+let currentTrack = 0; // Start with the first song
+const audio = document.getElementById("audio");
+
+// Function to play a song by index
+function playSong(index) {
+  const song = playlist[index];
+  audio.src = song.src; // Set the song source
+  document.title = `PacMazed | ${song.name}`; // Update the tab title
+  audio.play(); // Start playback
+}
+
+// Function to play the next song in the playlist
+function playNextSong() {
+  currentTrack = (currentTrack + 1) % playlist.length; // Loop back if at the end
+  playSong(currentTrack);
+}
+
+// Initial setup: Play the first song
+playSong(currentTrack);
+
+// Event listener to handle when the current song ends
+audio.addEventListener("ended", playNextSong);
+
+// Optional: Set the volume
+audio.volume = 0.1;
+
+
 // Show on-screen controls if on mobile
 if (/Mobi|Android/i.test(navigator.userAgent)) {
   document.getElementById("controls").style.display = "block";
@@ -92,13 +127,13 @@ function displayVictoryMess(moves) {
         html: `
             <p>You finished the level in <b>${moves}</b> moves.</p>
             <div class="level-container">${levelButtons}</div>
-            <p>Progressing to <b>Level ${Math.min(difficulty - 3, 40)}</b>...</p>
+            <p>Progressing to <b>Level ${Math.min(difficulty - 3, 44)}</b>...</p>
         `,
         icon: 'success',
         timer: 3000, // Auto-move after 3 sec
         showConfirmButton: false
     }).then(() => {
-        difficulty = Math.min(difficulty+1, 40); // Move to the next level
+        difficulty = Math.min(difficulty+1, 44); // Move to the next level
         makeMaze();
     });
 }
@@ -625,7 +660,7 @@ function displayVictoryMess(moves) {
 function showDifficultyPopup() {
   Swal.fire({
     title: "Welcome to Pac-Mazed: The Ghost Invasion!",
-    html: 'Instructions: <br>Use arrow keys or touch controls to move. Navigate the maze and slay the Ghosts! <br><br>For more information click \'More Info\'<br>To start the tutorial click \'Play\'',
+    html: 'Instructions: <br>Use WASD, arrow keys or touch controls to move. Navigate the maze and slay the Ghosts! <br><br>For more information click \'More Info\'<br>To start the tutorial click \'Play\'',
     imageUrl: './Sprites/PacMan.png', // Pac-Man image URL (update path as needed)
     imageWidth: '15vh',  // You can adjust the width as needed
     imageHeight: '15vh', // You can adjust the height as needed
@@ -635,21 +670,24 @@ function showDifficultyPopup() {
     denyButtonText: 'More Info',
     allowOutsideClick: false,
     customClass: {
-      popup: "swal2-popup"
+      popup: "swal2-popup",
+      confirmButton: "swal2-confirm",
+      denyButton: "swal2-deny"
     }
   }).then((result) => {
     if (result.isConfirmed) {
       // When "Play" is clicked, set difficulty and start level
       setDifficulty(1); // Start at Level 1 (Tutorial)
+      startTimer();
     } else if (result.isDenied) {
       // When "More Info" is clicked, show the backstory
       Swal.fire({
         title: 'Backstory of Pac-Mazed',
         html: 'Pac-Mazed is a thrilling spin-off of the classic Pac-Man game, where players control Pac-Man through 40 challenging mazes. The objective: slay the Ghosts and progress to the next level. As you advance, the mazes get trickier, and the Ghosts become harder to find, putting your instincts and strategy to the test. Can you conquer all the levels and save the world from the Ghost invasion?',
         imageUrl: './Sprites/PacMan.png', // Pac-Man image URL (update path as needed)
-      imageWidth: '15vh',  // You can adjust the width as needed
-      imageHeight: '15vh', // You can adjust the height as needed
-      imageAlt: 'Pac-Man',
+        imageWidth: '15vh',  // You can adjust the width as needed
+        imageHeight: '15vh', // You can adjust the height as needed
+        imageAlt: 'Pac-Man',
         confirmButtonText: 'Close',
       }).then(() => {
         // Reopen the original tutorial popup after closing the backstory
@@ -657,12 +695,6 @@ function showDifficultyPopup() {
       });
     }
   });
-}
-
-function setDifficulty(level) {
-  difficulty = level;
-  Swal.close();
-  makeMaze();
 }
 
 var difficulty;
@@ -710,4 +742,76 @@ function makeMaze() {
   finishSprite.onerror = function () {
       console.error(`Failed to load: ${finishSprite.src}`);
   };
+
+  document.getElementById("levelDiv").innerText = `${difficulty - 4}`; // Update the level text
+}
+
+document.getElementById("levelDiv").addEventListener("click", function() {
+  pauseTimer(); // Pause the timer when levels are clicked
+
+  let levelButtons = "";
+  for (let i = 1; i <= 40; i++) {
+      let completedClass = completedLevels.has(i) ? "completed-level" : "remaining-level";
+      let currentLevelClass = (i === difficulty - 4) ? "current-level" : "";
+      levelButtons += `<div class="level-box ${completedClass} ${currentLevelClass}">${i}</div>`;
+  }
+
+  Swal.fire({
+      title: 'Levels!',
+      html: `
+          <div class="level-container">${levelButtons}</div>
+      `,
+      showConfirmButton: false
+  }).then(() => {
+    resumeTimer(); // Resume the timer when the SweetAlert is closed
+  });
+});
+
+// Function to set the difficulty and update the level text
+
+// CSS to highlight the current level
+const style = document.createElement('style');
+style.innerHTML = `
+  .current-level {
+    background-color: rgb(0, 0, 141);
+    color: white;
+  }
+  .level-box {
+    pointer-events: none; /* Make buttons not clickable */
+  }
+`;
+document.head.appendChild(style);
+
+var timerInterval;
+var startTime;
+var pausedTime = 0;
+
+function startTimer() {
+  startTime = Date.now() - pausedTime;
+  timerInterval = setInterval(updateTimer, 1000);
+  pausedTime = 0;
+}
+
+function updateTimer() {
+  var elapsedTime = Date.now() - startTime;
+  var minutes = Math.floor(elapsedTime / 60000);
+  var seconds = Math.floor((elapsedTime % 60000) / 1000);
+  document.getElementById("timer").innerText = `${pad(minutes)}:${pad(seconds)}`;
+}
+
+function pad(number) {
+  return number < 10 ? '0' + number : number;
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
+
+function pauseTimer() {
+  clearInterval(timerInterval);
+  pausedTime = Date.now() - startTime;
+}
+
+function resumeTimer() {
+  startTimer();
 }

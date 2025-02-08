@@ -8,12 +8,17 @@
   <link rel="stylesheet" href="./style.css">
   <link rel="icon" type="image/x-icon" href="./Sprites/PacMan.ico">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
 </head>
 <body>
+  <audio id="audio" autoplay>
+  </audio>
 
   <div id="page">
     <!-- Navbar with burger icon -->
-     <h1>P<span class="letter">a</span class="letter">c<span class="letter">-</span>M<span class="letter">a</span class="letter">z<span class="letter">e</span>d</h1>
+     <h1>P<span class="letter">a</span class="letter">c<span class="letter" id="dash">-</span>M<span class="letter">a</span class="letter">z<span class="letter">e</span>d
+      <div id="levelDiv" class="level-div">1</div>
+    </h1>
     <div id="navbar">
       <div id="burgerIcon" class="burger-icon" onclick="toggleNav()">
         &#9776; <!-- Hamburger icon -->
@@ -57,7 +62,7 @@
       <button id="downButton">⬇️</button>
       <button id="rightButton">➡️</button>
     </div>
-  
+    <div id="timer" class="timer">00:00</div>
     <div class="info">i</div>
   </div>
 
