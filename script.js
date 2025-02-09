@@ -3,10 +3,13 @@ var player; // Ensure this is defined globally for access
 // Playlist of songs with names
 // Playlist of songs with names
 const playlist = [
-  { src: "./Music/nomark-vista.mp3", name: "Nomark - Vista" },
-  { src: "./Music/nomark-besede.mp3", name: "Nomark - Besede" },
-  { src: "./Music/nomark-sneg.mp3", name: "Nomark - Sneg" },
-  { src: "./Music/nomark-bedak.mp3", name: "Nomark - Bedak :D" }
+  { src: "./Music/nomark-besede.mp3", name: "Besede - Nomark" },
+  { src: "./Music/nomark-vista.mp3", name: "Vista - Nomark" },
+  { src: "./Music/nomark-sneg.mp3", name: "Sneg - Nomark" },
+  { src: "./Music/nomark-bedak.mp3", name: "Bedak :D - Nomark" },
+  { src: "./Music/nomark-iv3poland.mp3", name: "I <3 Poland - Nomark" },
+  { src: "./Music/nomark-meneni.mp3", name: "Mene Ni - Nomark" }, 
+  { src: "./Music/gettwome_brane_honta-tekken.mp3", name: "Tekken - gettwome, brane, honta" }
 ];
 
 let currentTrack = 0; // Start with the first song
