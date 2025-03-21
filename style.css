@@ -389,6 +389,54 @@ h1{
         font-size: 4vh;
 	}
 
+    h1{
+        color: #0000d9;
+        font-size: 3vh;
+        margin: 3vw auto;
+        font-family: pac-font;    
+        background-color: black;
+        width: 80%;
+        user-select: none;
+    }
+    
+    .letter{
+        color: #ffff00;
+        font-size: 3vh;
+        margin: 0.2vw 0.2vh 0 0.2vh;
+        font-family: pac-font;
+        background-color: black;
+    }
+
+    .timer {
+        font-size: 5vh;
+        color: #ffff00;
+        background-color: black;
+        padding: 0.5vh 1vh;
+        border-radius: 1vh;
+        border: 1vh solid rgb(0, 0, 141);
+        position: absolute;
+        top: 80vh;
+        right: 2vh;
+        font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        user-select: none;
+    }
+
+    .level-div {
+        display: inline-block;
+        background-color: black;
+        color: #ffff00;
+        text-align: center;
+        padding: 0.5vh 1vh 0 1vh;
+        border-radius: 1.5vh;
+        border: 1vh solid rgb(0, 0, 141);
+        cursor: pointer;
+        font-size: 4vh;
+        margin-left: 1vh;
+        margin-top: 5vw;
+        font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        user-select: none;
+    }
+
     #navbar {
         flex-direction: row;
         justify-content: space-between;
